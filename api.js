@@ -21,7 +21,7 @@ async function request(path, { method = 'GET', body, token } = {}) {
       ...(body ? { body: JSON.stringify(body) } : {}),
     });
   } catch {
-    throw new ApiError(`Backendga ulana olmadik (${API_BASE_URL}). Server ishlayotganini tekshiring.`);
+    throw new ApiError(API_BASE_URL.includes('localhost') || API_BASE_URL.includes('127.0.0.1') ? 'Sayt hozir lokal backendga ulangan. GitHub Pages orqali ro‘yxatdan o‘tish uchun config.js faylida ommaviy HTTPS API manzilini ko‘rsating.' : `Backendga ulanib bo‘lmadi (${API_BASE_URL}). Server, HTTPS va CORS sozlamalarini tekshiring.`);
   }
   let data = null;
   try { data = await response.json(); } catch { /* empty response */ }
