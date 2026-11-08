@@ -188,7 +188,7 @@ for(let lev=0;lev<=1;lev++){
    // Upstairs landing exits directly into rear west room through a real doorway.
    wall('Upper rear west partition A',-2.62,-3.625,.16,1.45,lev,M.plaster);
    wall('Upper rear west partition B',-2.62,-5.925,.16,.15,lev,M.plaster);
-   box('Upper west landing doorway lintel',-2.62,UPPER+2.75,-5.10,.16,.72,1.5,M.plaster,g);
+   box('Upper west landing doorway lintel',-2.62,UPPER+2.75,-5.10,.16,.72,1.5,M.plaster,upperFloor);
  }
  wall('West corridor partition',-2.62,2.85,.16,5.7,lev,M.plaster);
  wall('West corridor door jamb',-2.62,-.95,.16,1.50,lev,M.plaster);
@@ -196,7 +196,7 @@ for(let lev=0;lev<=1;lev++){
  // Both floors have a 1.45 m doorway between the front and rear west rooms.
  wall('West rooms divider west',-6.675,-.18,4.25,.16,lev,M.plaster);
  wall('West rooms divider east',-2.90,-.18,.40,.16,lev,M.plaster);
- box('West dividing doorway lintel',-3.825,(lev?UPPER:FLOOR)+2.77,-.18,1.45,.68,.16,M.plaster,g);
+ box('West dividing doorway lintel',-3.825,(lev?UPPER:FLOOR)+2.77,-.18,1.45,.68,.16,M.plaster,lev?upperFloor:groundFloor);
  // Doorway at the front of each west bedroom, adjoining the entrance / upper landing.
  wall('West corridor front stub',-2.62,5.89,.16,.35,lev,M.plaster);
 }
