@@ -784,8 +784,8 @@ function isBlocked(x,z,level=footY>(FLOOR+UPPER)/2?1:0,fromX=camera.position.x,f
     outsideZ>=STAIR_START_Z-.08 && footY<FLOOR+.48;
   const westUpperExit=outsideX<=-2.30 && stairX> -2.31 &&
     stairZ>-5.47 && stairZ< -4.74 && footY>UPPER-.58;
-  const farEndExit=outsideZ<=STAIR_END_Z && footY>UPPER-.48;
-  if(!bottomEntrance&&!westUpperExit&&!farEndExit)return true;
+  // The rear wall leaves no viable upper landing; exit via the west doorway instead.
+  if(!bottomEntrance&&!westUpperExit)return true;
  }
  if(enteringStair){
   // The space between the two continuous handrails is the walkable ramp.
