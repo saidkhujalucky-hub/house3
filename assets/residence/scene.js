@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { embeddedTextures } from './embedded-textures.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { Water } from 'three/addons/objects/Water.js';
@@ -7,7 +8,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
 
 const $=s=>document.querySelector(s),mobile=matchMedia('(max-width:700px)').matches;
-const ASSETS={"wood_diff":"./assets/residence/wood_diff.webp","wood_normal":"./assets/residence/wood_normal.webp","wood_rough":"./assets/residence/wood_rough.webp","plaster_diff":"./assets/residence/plaster_diff.webp","plaster_normal":"./assets/residence/plaster_normal.webp","plaster_rough":"./assets/residence/plaster_rough.webp","stone_diff":"./assets/residence/stone_diff.webp","stone_normal":"./assets/residence/stone_normal.webp","stone_rough":"./assets/residence/stone_rough.webp","grass_diff":"./assets/residence/grass_diff.webp","grass_normal":"./assets/residence/grass_normal.webp","environment":"./assets/residence/environment.hdr"};
+const ASSETS={...embeddedTextures,environment:null};
 let randomSeed=1729;
 function rand(){randomSeed=(Math.imul(randomSeed,1664525)+1013904223)>>>0;return randomSeed/4294967296;}
 function between(a,b){return a+(b-a)*rand();}
