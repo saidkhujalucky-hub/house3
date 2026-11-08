@@ -183,7 +183,13 @@ const plaqueTexture=canvasTexture(384,256,c=>{c.fillStyle='#303635';c.fillRect(0
 box('House number plaque',-3.45,1.93,6.29,.55,.38,.035,new THREE.MeshStandardMaterial({map:plaqueTexture,roughness:.56}),groundFloor);
 // Left front bedroom and rear dining have a 1.1 m doorway from the hall.
 for(let lev=0;lev<=1;lev++){
- wall('West corridor partition',-2.62,-4.45,.16,3.1,lev,M.plaster);
+ if(lev===0) wall('West corridor partition',-2.62,-4.45,.16,3.1,lev,M.plaster);
+ else {
+   // Upstairs landing exits directly into rear west room through a real doorway.
+   wall('Upper rear west partition A',-2.62,-3.625,.16,1.45,lev,M.plaster);
+   wall('Upper rear west partition B',-2.62,-5.925,.16,.15,lev,M.plaster);
+   box('Upper west landing doorway lintel',-2.62,UPPER+2.75,-5.10,.16,.72,1.5,M.plaster,g);
+ }
  wall('West corridor partition',-2.62,2.85,.16,5.7,lev,M.plaster);
  wall('West corridor door jamb',-2.62,-.95,.16,1.50,lev,M.plaster);
  box('West door opening lintel',-2.62,(lev?UPPER:FLOOR)+2.77,-2.30,.16,.68,1.20,M.plaster,lev?upperFloor:groundFloor);
@@ -194,8 +200,8 @@ for(let lev=0;lev<=1;lev++){
 // Ground bedroom entrance is at z .3..1.4. Split the solid corridor panel to leave it open.
 function removeWallByNameAndPosition(g,x,z){for(const m of [...g.children])if(m.name==='West corridor partition'&&Math.abs(m.position.x-x)<.01&&Math.abs(m.position.z-z)<.01){g.remove(m);m.geometry.dispose();}for(let i=colliders.length-1;i>=0;i--){const c=colliders[i];if(c.label==='West corridor partition'&&Math.abs((c.minX+c.maxX)/2-x)<.01&&Math.abs((c.minZ+c.maxZ)/2-z)<.01&&c.level===(g===upperFloor?1:0))colliders.splice(i,1);}}
 for(const [g,l] of [[groundFloor,0],[upperFloor,1]]){removeWallByNameAndPosition(g,-2.62,2.85);wall('Bedroom hall wall',-2.62,3.72,.16,4.12,l);wall('Bedroom hall wall',-2.62,.18,.16,.36,l);box('Bedroom doorway lintel',-2.62,(l?UPPER:FLOOR)+2.77,1.01,.16,.68,1.30,M.plaster,g);}
-wall('Living media wall',4.8,-.10,7.2,.18,0,M.charcoal,2.9);
-wall('Master rear divider',4.8,-.18,7.2,.16,1,M.plaster);
+wall('Living media wall',5.73,-.10,5.34,.18,0,M.charcoal,2.9);
+wall('Master rear divider',5.7,-.18,5.4,.16,1,M.plaster);
 wall('Master corridor wall',.58,3.9,.16,4.3,1,M.plaster);
 wall('Master corridor rear',.58,-3.45,.16,5.3,1,M.plaster);
 box('Master doorway lintel',.58,UPPER+2.78,.94,.16,.68,1.30,M.plaster,upperFloor);
@@ -227,7 +233,10 @@ for(let x of [-2.37,-.49]){
  rod('Stair stringer',[x,FLOOR+.02,.90],[x,UPPER-.08,-5.52],.03,M.charcoal,groundFloor);
  rod('Stair continuous handrail',[x,FLOOR+1.02,.90],[x,UPPER+1.02,-5.52],.020,M.steel,groundFloor);
  for(let i=0;i<18;i++){const z=.9-i*.357,y=FLOOR+i*(UPPER-FLOOR)/18;rod('Stair baluster',[x,y,z],[x,y+.98,z],.009,M.charcoal,groundFloor);}
- block(x,-2.23,.08,6.65,0,'Stair guard');block(x,-2.23,.08,6.65,1,'Stair guard');
+ block(x,-2.23,.08,6.65,0,'Stair guard');
+ // At the top left, the upper guard stops short of the rear room doorway.
+ if(x< -1)block(x,-1.50,.08,5.20,1,'Stair guard');
+ else block(x,-2.23,.08,6.65,1,'Stair guard');
 }
 // The upper-floor stair opening gets a glass guard on its open south edge (the sides already have handrails).
 box('Stair void glass guard',-1.43,UPPER+.56,1.075,2.10,1.0,.02,M.glass,upperFloor,false);
@@ -237,14 +246,14 @@ for(let x of [-2.49,-.37])box('Stair void guard post',x,UPPER+.55,1.075,.05,1.1,
 // Keep these at floor-2 level: the lower stair handrails slope with the treads.
 // Large transparent panes keep the landing visually open while closing the exposed drop.
 for(const sideX of [-2.49,-.37]){
-  const z0=-5.42,z1=1.03,span=z1-z0;
+  const z0=sideX< -1?-4.15:-5.42,z1=1.03,span=z1-z0;
   box('Upper staircase safety glass',sideX,UPPER+.57,(z0+z1)/2,.018,1.08,span,M.glass,upperFloor,false);
   rod('Upper staircase continuous cap',[sideX,UPPER+1.12,z0],[sideX,UPPER+1.12,z1],.017,M.steel,upperFloor);
   for(let z=z0;z<=z1+.001;z+=1.61){
     box('Upper stairwell guard support',sideX,UPPER+.56,z,.047,1.11,.047,M.steel,upperFloor);
   }
 }
-block(-2.49,-2.18,.055,6.52,1,'Upper staircase glass edge');
+block(-2.49,-1.53,.055,5.15,1,'Upper staircase glass edge');
 block(-.37,-2.18,.055,6.52,1,'Upper staircase glass edge');
 block(-1.43,1.08,2.12,.055,1,'Upper landing glass barrier');
 // White cantilevers, cedar soffits, balcony and rainwater details.
@@ -754,19 +763,22 @@ function isBlocked(x,z,level=footY>(FLOOR+UPPER)/2?1:0,fromX=camera.position.x,f
  // A ramp has two physical entrances. Side entrances would let the camera
  // pass through the balusters or change floor underneath the upper slab.
  if(enteringStair!==leavingStair){
-  if(enteringStair){
-   const fromBottom=fromZ>=STAIR_START_Z&&footY<FLOOR+.48;
-   const fromTop=fromZ<=STAIR_END_Z&&footY>UPPER-.48;
-   if(!fromBottom&&!fromTop)return true;
-  }else{
-   const throughBottom=z>=STAIR_START_Z&&stairFloor(fromZ)<FLOOR+.48;
-   const throughTop=z<=STAIR_END_Z&&stairFloor(fromZ)>UPPER-.48;
-   if(!throughBottom&&!throughTop)return true;
-  }
+  // Only use the ground entrance or upper landing doorway, never jump sideways off stairs.
+  const stairX=enteringStair?x:fromX;
+  const stairZ=enteringStair?z:fromZ;
+  const outsideX=enteringStair?fromX:x;
+  const outsideZ=enteringStair?fromZ:z;
+  const bottomEntrance=stairX>STAIR_SAFE_LEFT&&stairX<STAIR_SAFE_RIGHT &&
+    outsideZ>=STAIR_START_Z-.08 && footY<FLOOR+.48;
+  const westUpperExit=outsideX<=-2.30 && stairX> -2.31 &&
+    stairZ>-5.47 && stairZ< -4.74 && footY>UPPER-.58;
+  const farEndExit=outsideZ<=STAIR_END_Z && footY>UPPER-.48;
+  if(!bottomEntrance&&!westUpperExit&&!farEndExit)return true;
  }
  if(enteringStair){
   // The space between the two continuous handrails is the walkable ramp.
-  if(x<STAIR_SAFE_LEFT||x>STAIR_SAFE_RIGHT)return true;
+  const upperSideEntrance=z>-5.47&&z< -4.74&&footY>UPPER-.58;
+  if((x<STAIR_SAFE_LEFT||x>STAIR_SAFE_RIGHT)&&!(upperSideEntrance&&x<STAIR_SAFE_LEFT))return true;
   return false;
  }
  if(level===1){
