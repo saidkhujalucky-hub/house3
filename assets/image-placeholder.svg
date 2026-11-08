@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-label="Rasm hali qo‘shilmagan">
+  <rect width="960" height="640" fill="#20372d"/>
+  <rect x="380" y="205" width="200" height="150" rx="12" fill="none" stroke="#b8aa8e" stroke-width="5"/>
+  <circle cx="430" cy="250" r="15" fill="#b8aa8e"/>
+  <path d="m390 340 60-60 48 40 40-52 32 72" fill="none" stroke="#b8aa8e" stroke-width="5" stroke-linejoin="round"/>
+  <text x="480" y="422" fill="#e5d9c4" text-anchor="middle" font-family="Arial,sans-serif" font-size="28">Rasm hali qo‘shilmagan</text>
+</svg>
