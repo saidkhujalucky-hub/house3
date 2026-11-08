@@ -193,18 +193,27 @@ for(let lev=0;lev<=1;lev++){
  wall('West corridor partition',-2.62,2.85,.16,5.7,lev,M.plaster);
  wall('West corridor door jamb',-2.62,-.95,.16,1.50,lev,M.plaster);
  box('West door opening lintel',-2.62,(lev?UPPER:FLOOR)+2.77,-2.30,.16,.68,1.20,M.plaster,lev?upperFloor:groundFloor);
- wall('West rooms dividing wall',-5.75,-.18,6.1,.16,lev,M.plaster);
+ // Both floors have a 1.45 m doorway between the front and rear west rooms.
+ wall('West rooms divider west',-7.05,-.18,3.50,.16,lev,M.plaster);
+ wall('West rooms divider east',-3.275,-.18,1.15,.16,lev,M.plaster);
+ box('West dividing doorway lintel',-4.575,(lev?UPPER:FLOOR)+2.77,-.18,1.45,.68,.16,M.plaster,g);
  // Doorway at the front of each west bedroom, adjoining the entrance / upper landing.
  wall('West corridor front stub',-2.62,5.89,.16,.35,lev,M.plaster);
 }
 // Ground bedroom entrance is at z .3..1.4. Split the solid corridor panel to leave it open.
 function removeWallByNameAndPosition(g,x,z){for(const m of [...g.children])if(m.name==='West corridor partition'&&Math.abs(m.position.x-x)<.01&&Math.abs(m.position.z-z)<.01){g.remove(m);m.geometry.dispose();}for(let i=colliders.length-1;i>=0;i--){const c=colliders[i];if(c.label==='West corridor partition'&&Math.abs((c.minX+c.maxX)/2-x)<.01&&Math.abs((c.minZ+c.maxZ)/2-z)<.01&&c.level===(g===upperFloor?1:0))colliders.splice(i,1);}}
-for(const [g,l] of [[groundFloor,0],[upperFloor,1]]){removeWallByNameAndPosition(g,-2.62,2.85);wall('Bedroom hall wall',-2.62,3.72,.16,4.12,l);wall('Bedroom hall wall',-2.62,.18,.16,.36,l);box('Bedroom doorway lintel',-2.62,(l?UPPER:FLOOR)+2.77,1.01,.16,.68,1.30,M.plaster,g);}
+for(const [g,l] of [[groundFloor,0],[upperFloor,1]]){
+ removeWallByNameAndPosition(g,-2.62,2.85);
+ // Entrance from the central hallway at z=3.55, well away from the stair rail.
+ wall('Bedroom hall wall lower',-2.62,1.60,.16,2.50,l);
+ wall('Bedroom hall wall upper',-2.62,5.01,.16,1.54,l);
+ box('Bedroom doorway lintel',-2.62,(l?UPPER:FLOOR)+2.77,3.55,.16,.68,1.40,M.plaster,g);
+}
 wall('Living media wall',5.73,-.10,5.34,.18,0,M.charcoal,2.9);
 wall('Master rear divider',5.7,-.18,5.4,.16,1,M.plaster);
-wall('Master corridor wall',.58,3.9,.16,4.3,1,M.plaster);
-wall('Master corridor rear',.58,-3.45,.16,5.3,1,M.plaster);
-box('Master doorway lintel',.58,UPPER+2.78,.94,.16,.68,1.30,M.plaster,upperFloor);
+wall('Master corridor wall',1.25,3.9,.16,4.3,1,M.plaster);
+wall('Master corridor rear',1.25,-3.45,.16,5.3,1,M.plaster);
+box('Master doorway lintel',1.25,UPPER+2.78,.94,.16,.68,1.30,M.plaster,upperFloor);
 // Upper floor slabs surround the actual staircase void.
 for(const [x,z,w,d] of [[-5.78,0,6.55,12.6],[4.47,0,9.65,12.6],[-1.45,3.69,2.1,5.22],[-1.45,-5.85,2.1,.95]])box('Upper concrete deck',x,3.86,z,w,.28,d,M.stone,upperFloor);
 function woodFloor(x,z,w,d,y,parent){
@@ -231,8 +240,11 @@ for(const [x,z,w,d] of [[-5.78,0,6.3,12],[4.42,0,9.38,12],[-1.45,3.67,2.1,5.18],
 for(let i=0;i<18;i++){const z=.90-(i+.5)*.357,y=FLOOR+(i+1)*(UPPER-FLOOR)/18;round('Oak stair tread',-1.43,y-.055,z,1.70,.11,.37,.014,M.wood,groundFloor);glow('Stair under-tread light',-1.43,y-.08,z+.17,1.45,.013,.015,groundFloor);}
 for(let x of [-2.37,-.49]){
  rod('Stair stringer',[x,FLOOR+.02,.90],[x,UPPER-.08,-5.52],.03,M.charcoal,groundFloor);
- rod('Stair continuous handrail',[x,FLOOR+1.02,.90],[x,UPPER+1.02,-5.52],.020,M.steel,groundFloor);
- for(let i=0;i<18;i++){const z=.9-i*.357,y=FLOOR+i*(UPPER-FLOOR)/18;rod('Stair baluster',[x,y,z],[x,y+.98,z],.009,M.charcoal,groundFloor);}
+ rod('Stair continuous handrail',[x,FLOOR+1.02,.90],[x,x< -1?UPPER-.12:UPPER+1.02,x< -1?-4.43:-5.52],.020,M.steel,groundFloor);
+ for(let i=0;i<18;i++){const z=.9-i*.357,y=FLOOR+i*(UPPER-FLOOR)/18;
+   if(x< -1&&z< -4.43)continue; // Clear the upper doorway of balusters.
+   rod('Stair baluster',[x,y,z],[x,y+.98,z],.009,M.charcoal,groundFloor);
+ }
  block(x,-2.23,.08,6.65,0,'Stair guard');
  // At the top left, the upper guard stops short of the rear room doorway.
  if(x< -1)block(x,-1.50,.08,5.20,1,'Stair guard');
