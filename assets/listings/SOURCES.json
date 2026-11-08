@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "title": "Hashamatli villa, Yakkasaroy",
+    "source": "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1400&q=78",
+    "file": "assets/listings/01.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 2,
+    "title": "Yangi kvartira, Chilonzor",
+    "source": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1400&q=78",
+    "file": "assets/listings/02.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 3,
+    "title": "Kvartira ijaraga, Mirzo Ulug‘bek",
+    "source": "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=78",
+    "file": "assets/listings/03.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 4,
+    "title": "Zamonaviy uy, Bektemir",
+    "source": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1400&q=78",
+    "file": "assets/listings/04.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 5,
+    "title": "Shinam hovli, Yunusobod",
+    "source": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=72",
+    "file": "assets/listings/05.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 6,
+    "title": "Biznes uchun zamonaviy ofis",
+    "source": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=600&q=72",
+    "file": "assets/listings/06.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 7,
+    "title": "Yorug‘ studiya, Shayxontohur",
+    "source": "https://images.unsplash.com/photo-1600607687644-c7171b42498f",
+    "file": "assets/listings/07.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 8,
+    "title": "Keng yer uchastkasi, Zangiota",
+    "source": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=72",
+    "file": "assets/listings/08.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 9,
+    "title": "Bog‘li villa, Qibray",
+    "source": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9",
+    "file": "assets/listings/09.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 10,
+    "title": "Oilaviy hovli, Sergeli",
+    "source": "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
+    "file": "assets/listings/10.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 11,
+    "title": "Yorug‘ uy, Olmazor",
+    "source": "https://images.unsplash.com/photo-1564013799919-ab600027ffc6",
+    "file": "assets/listings/11.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 12,
+    "title": "Yangi townhouse, Yashnobod",
+    "source": "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde",
+    "file": "assets/listings/12.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 13,
+    "title": "Tog‘ manzarali villa, Chorvoq",
+    "source": "https://images.unsplash.com/photo-1613977257363-707ba9348227",
+    "file": "assets/listings/13.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 14,
+    "title": "Penthaus, Mirobod",
+    "source": "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea",
+    "file": "assets/listings/14.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 15,
+    "title": "3 xonali kvartira, Olmazor",
+    "source": "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0",
+    "file": "assets/listings/15.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 16,
+    "title": "Dizaynerlik kvartira, Chilonzor",
+    "source": "https://images.unsplash.com/photo-1600585152915-d208bec867a1",
+    "file": "assets/listings/16.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 17,
+    "title": "Keng hovli, Uchtepa",
+    "source": "https://images.unsplash.com/photo-1518780664697-55e3ad937233",
+    "file": "assets/listings/17.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 18,
+    "title": "Modern villa, Parkent",
+    "source": "https://images.unsplash.com/photo-1613490493576-7fde63acd811",
+    "file": "assets/listings/18.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 19,
+    "title": "Jihozlangan kvartira ijaraga, Yakkasaroy",
+    "source": "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
+    "file": "assets/listings/19.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  },
+  {
+    "id": 20,
+    "title": "Hovlili uy, Qorasuv",
+    "source": "https://images.unsplash.com/photo-1600047509782-20d39509f26d",
+    "file": "assets/listings/20.webp",
+    "use": "Demo listing photograph; not a verified property in Uzbekistan"
+  }
+]
