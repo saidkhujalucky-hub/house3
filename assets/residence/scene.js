@@ -224,14 +224,28 @@ for(const [x,z,w,d] of [[-5.78,0,6.3,12],[4.42,0,9.38,12],[-1.45,3.67,2.1,5.18],
 for(let i=0;i<18;i++){const z=.90-(i+.5)*.357,y=FLOOR+(i+1)*(UPPER-FLOOR)/18;round('Oak stair tread',-1.43,y-.055,z,1.70,.11,.37,.014,M.wood,groundFloor);glow('Stair under-tread light',-1.43,y-.08,z+.17,1.45,.013,.015,groundFloor);}
 for(let x of [-2.37,-.49]){
  rod('Stair stringer',[x,FLOOR+.02,.90],[x,UPPER-.08,-5.52],.03,M.charcoal,groundFloor);
- rod('Stair continuous handrail',[x,FLOOR+1.02,.90],[x,UPPER+1.02,-5.52],.027,M.bronze,groundFloor);
- for(let i=0;i<18;i++){const z=.9-i*.357,y=FLOOR+i*(UPPER-FLOOR)/18;rod('Stair baluster',[x,y,z],[x,y+.98,z],.012,M.charcoal,groundFloor);}
+ rod('Stair continuous handrail',[x,FLOOR+1.02,.90],[x,UPPER+1.02,-5.52],.020,M.steel,groundFloor);
+ for(let i=0;i<18;i++){const z=.9-i*.357,y=FLOOR+i*(UPPER-FLOOR)/18;rod('Stair baluster',[x,y,z],[x,y+.98,z],.009,M.charcoal,groundFloor);}
  block(x,-2.23,.08,6.65,0,'Stair guard');block(x,-2.23,.08,6.65,1,'Stair guard');
 }
 // The upper-floor stair opening gets a glass guard on its open south edge (the sides already have handrails).
 box('Stair void glass guard',-1.43,UPPER+.56,1.075,2.10,1.0,.02,M.glass,upperFloor,false);
 rod('Stair void guard rail',[-2.49,UPPER+1.07,1.075],[-.37,UPPER+1.07,1.075],.022,M.steel,upperFloor);
 for(let x of [-2.49,-.37])box('Stair void guard post',x,UPPER+.55,1.075,.05,1.1,.05,M.steel,upperFloor);
+// Guard BOTH long edges of the upper-level staircase void, not just its short front edge.
+// Keep these at floor-2 level: the lower stair handrails slope with the treads.
+// Large transparent panes keep the landing visually open while closing the exposed drop.
+for(const sideX of [-2.49,-.37]){
+  const z0=-5.42,z1=1.03,span=z1-z0;
+  box('Upper staircase safety glass',sideX,UPPER+.57,(z0+z1)/2,.018,1.08,span,M.glass,upperFloor,false);
+  rod('Upper staircase continuous cap',[sideX,UPPER+1.12,z0],[sideX,UPPER+1.12,z1],.017,M.steel,upperFloor);
+  for(let z=z0;z<=z1+.001;z+=1.61){
+    box('Upper stairwell guard support',sideX,UPPER+.56,z,.047,1.11,.047,M.steel,upperFloor);
+  }
+}
+block(-2.49,-2.18,.055,6.52,1,'Upper staircase glass edge');
+block(-.37,-2.18,.055,6.52,1,'Upper staircase glass edge');
+block(-1.43,1.08,2.12,.055,1,'Upper landing glass barrier');
 // White cantilevers, cedar soffits, balcony and rainwater details.
 box('Cantilever dark roof',0,7.46,-.03,21.3,.27,15.3,M.charcoal,roof);
 box('Knife-edge pale roof fascia',0,7.30,-.03,21.15,.10,15.15,M.plaster,roof);
@@ -714,7 +728,10 @@ function updateWalkLabel(){
  $('#floor').textContent=floor2?'↓ 1-qavat':'↑ 2-qavat';
  $('#floor').classList.toggle('active',floor2);
 }
-const PLAYER_RADIUS=.28,STEPS_PER_METRE=14;
+// Character capsule clearance prevents the eye from clipping into stair rails,
+// adjacent plaster walls and the upper-floor edge.
+const PLAYER_RADIUS=.38,STEPS_PER_METRE=20;
+const STAIR_SAFE_LEFT=-1.96,STAIR_SAFE_RIGHT=-.90;
 const STAIR_START_Z=1.10,STAIR_END_Z=-5.58;
 function onStairs(x,z){return x>-2.30&&x<-.56&&z>STAIR_END_Z&&z<STAIR_START_Z;}
 function stairFloor(z){return FLOOR+clamp((.90-z)/6.42,0,1)*(UPPER-FLOOR);}
@@ -731,6 +748,8 @@ function walkHeight(x,z){
 function isBlocked(x,z,level=footY>(FLOOR+UPPER)/2?1:0,fromX=camera.position.x,fromZ=camera.position.z){
  if(x<-21.35||x>21.35||z<-17.8||z>29.3)return true;
  const enteringStair=onStairs(x,z),leavingStair=onStairs(fromX,fromZ);
+// A camera may only move into the stair shaft through its lower or upper end;
+// nearby mezzanine slabs and half-height guards must not be bypassed sideways.
  // A ramp has two physical entrances. Side entrances would let the camera
  // pass through the balusters or change floor underneath the upper slab.
  if(enteringStair!==leavingStair){
@@ -746,7 +765,7 @@ function isBlocked(x,z,level=footY>(FLOOR+UPPER)/2?1:0,fromX=camera.position.x,f
  }
  if(enteringStair){
   // The space between the two continuous handrails is the walkable ramp.
-  if(x<-2.02||x>-.84)return true;
+  if(x<STAIR_SAFE_LEFT||x>STAIR_SAFE_RIGHT)return true;
   return false;
  }
  if(level===1){
