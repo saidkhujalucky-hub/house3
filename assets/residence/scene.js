@@ -236,6 +236,9 @@ function woodFloor(x,z,w,d,y,parent){
 }
 woodFloor(0,0,17.85,12,FLOOR-.02,groundFloor);
 for(const [x,z,w,d] of [[-5.78,0,6.3,12],[4.42,0,9.38,12],[-1.45,3.67,2.1,5.18],[-1.45,-5.85,2.1,.95]])woodFloor(x,z,w,d,UPPER-.02,upperFloor);
+// The turn at the top is a real landing connecting the stair treads to the west hallway.
+// It also gives the camera solid visual flooring while making the left turn.
+box('Upper stair turn landing',-2.45,UPPER-.075,-5.14,2.0,.15,1.0,M.floor,upperFloor,false);
 // Floating oak stair: 18 treads connect both floors, with continuous steel handrails.
 for(let i=0;i<18;i++){const z=.90-(i+.5)*.357,y=FLOOR+(i+1)*(UPPER-FLOOR)/18;round('Oak stair tread',-1.43,y-.055,z,1.70,.11,.37,.014,M.wood,groundFloor);glow('Stair under-tread light',-1.43,y-.08,z+.17,1.45,.013,.015,groundFloor);}
 for(let x of [-2.37,-.49]){
@@ -758,7 +761,11 @@ const STAIR_START_Z=1.10,STAIR_END_Z=-5.58;
 function onStairs(x,z){return x>-2.30&&x<-.56&&z>STAIR_END_Z&&z<STAIR_START_Z;}
 function stairFloor(z){return FLOOR+clamp((.90-z)/6.42,0,1)*(UPPER-FLOOR);}
 function walkHeight(x,z){
- if(onStairs(x,z)){stairActive=true;return stairFloor(z);}
+ if(onStairs(x,z)){
+   stairActive=true;
+   // Reach landing level before the left turn instead of climbing into the back wall.
+   return z < -4.75 ? UPPER : stairFloor(z);
+ }
  stairActive=false;
  // The previous physical height selects the landing at a staircase exit.
  // Do not select a floor solely from a stale toggle or from camera pitch.
@@ -832,6 +839,16 @@ function move(dt){
  camera.getWorldDirection(forward);forward.y=0;forward.normalize();
  right.crossVectors(forward,THREE.Object3D.DEFAULT_UP).normalize();
  const speed=(pressed.has('shift')?4.3:2.15)*dt/Math.hypot(f,s);
+ // At the end of the stair, straight W would run directly into the back wall.
+ // Guide forward movement around the top landing into the actual west hallway.
+ // The path remains collision-checked by moveStep. Manual A/D still work normally.
+ const onTopTurn=mode==='walk'&&onStairs(camera.position.x,camera.position.z)&&
+   camera.position.z < -4.84 && footY > UPPER-.5 &&
+   f>0 && Math.abs(s)<.01 && forward.z < -.35;
+ if(onTopTurn){
+   moveStep(-speed,THREE.MathUtils.clamp((-5.14-camera.position.z)*2,-.55,.55)*speed);
+   return;
+ }
  moveStep((forward.x*f+right.x*s)*speed,(forward.z*f+right.z*s)*speed);
 }
 function updateDoors(dt){
