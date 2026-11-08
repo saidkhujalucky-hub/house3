@@ -194,9 +194,9 @@ for(let lev=0;lev<=1;lev++){
  wall('West corridor door jamb',-2.62,-.95,.16,1.50,lev,M.plaster);
  box('West door opening lintel',-2.62,(lev?UPPER:FLOOR)+2.77,-2.30,.16,.68,1.20,M.plaster,lev?upperFloor:groundFloor);
  // Both floors have a 1.45 m doorway between the front and rear west rooms.
- wall('West rooms divider west',-7.05,-.18,3.50,.16,lev,M.plaster);
- wall('West rooms divider east',-3.275,-.18,1.15,.16,lev,M.plaster);
- box('West dividing doorway lintel',-4.575,(lev?UPPER:FLOOR)+2.77,-.18,1.45,.68,.16,M.plaster,g);
+ wall('West rooms divider west',-6.675,-.18,4.25,.16,lev,M.plaster);
+ wall('West rooms divider east',-2.90,-.18,.40,.16,lev,M.plaster);
+ box('West dividing doorway lintel',-3.825,(lev?UPPER:FLOOR)+2.77,-.18,1.45,.68,.16,M.plaster,g);
  // Doorway at the front of each west bedroom, adjoining the entrance / upper landing.
  wall('West corridor front stub',-2.62,5.89,.16,.35,lev,M.plaster);
 }
@@ -240,7 +240,7 @@ for(const [x,z,w,d] of [[-5.78,0,6.3,12],[4.42,0,9.38,12],[-1.45,3.67,2.1,5.18],
 for(let i=0;i<18;i++){const z=.90-(i+.5)*.357,y=FLOOR+(i+1)*(UPPER-FLOOR)/18;round('Oak stair tread',-1.43,y-.055,z,1.70,.11,.37,.014,M.wood,groundFloor);glow('Stair under-tread light',-1.43,y-.08,z+.17,1.45,.013,.015,groundFloor);}
 for(let x of [-2.37,-.49]){
  rod('Stair stringer',[x,FLOOR+.02,.90],[x,UPPER-.08,-5.52],.03,M.charcoal,groundFloor);
- rod('Stair continuous handrail',[x,FLOOR+1.02,.90],[x,x< -1?UPPER-.12:UPPER+1.02,x< -1?-4.43:-5.52],.020,M.steel,groundFloor);
+ rod('Stair continuous handrail',[x,FLOOR+1.02,.90],[x,x< -1?UPPER+.44:UPPER+1.02,x< -1?-4.43:-5.52],.020,M.steel,groundFloor);
  for(let i=0;i<18;i++){const z=.9-i*.357,y=FLOOR+i*(UPPER-FLOOR)/18;
    if(x< -1&&z< -4.43)continue; // Clear the upper doorway of balusters.
    rod('Stair baluster',[x,y,z],[x,y+.98,z],.009,M.charcoal,groundFloor);
@@ -509,10 +509,10 @@ const bathWater=shape('Still bath water',new THREE.CircleGeometry(.60,48),new TH
 line('Floor mounted bath mixer',[[-5.45,UPPER+.04,-4.5],[-5.45,UPPER+.98,-4.5],[-5.73,UPPER+1.02,-4.5]],.023,M.steel,upperFloor);
 block(-6.94,-4.35,2.7,1.53,1,'Bathtub');
 // Double floating vanity in the dividing wall, with wall-mounted spouts.
-round('Floating bathroom vanity',-5.2,UPPER+.46,-.49,3.75,.52,.67,.045,M.walnut,upperFloor);
-round('Bathroom vanity stone top',-5.2,UPPER+.77,-.49,3.85,.06,.75,.018,M.stone,upperFloor);
-block(-5.2,-.49,3.9,.75,1,'Bathroom vanity');
-for(let x of [-6.24,-4.20]){
+round('Floating bathroom vanity',-6.4,UPPER+.46,-.49,3.75,.52,.67,.045,M.walnut,upperFloor);
+round('Bathroom vanity stone top',-6.4,UPPER+.77,-.49,3.85,.06,.75,.018,M.stone,upperFloor);
+block(-6.4,-.49,3.9,.75,1,'Bathroom vanity');
+for(let x of [-7.44,-5.40]){
  const pts=[[0,0],[.20,0],[.29,.09],[.31,.15],[.29,.17],[.26,.11],[.18,.023],[0,.023]].map(v=>new THREE.Vector2(...v));shape('Ceramic vessel basin',new THREE.LatheGeometry(pts,36),M.white,x,UPPER+.80,-.50,upperFloor);
  line('Brushed wall basin spout',[[x,UPPER+1.15,-.27],[x,UPPER+1.15,-.54],[x,UPPER+1.10,-.57]],.017,M.steel,upperFloor);
  round('Backlit bathroom mirror frame',x,UPPER+1.83,-.282,1.12,1.32,.040,.08,M.bronze,upperFloor);
