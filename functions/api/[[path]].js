@@ -28,7 +28,7 @@ export async function onRequest({ request, env, params }) {
   headers.set('x-forwarded-host', url.host);
   // Request carries the original method and body (including multipart uploads).
   try {
-    const upstream = await fetch(new Request(target, { method: request.method, headers, body: ['GET','HEAD'].includes(request.method) ? undefined : request.body, redirect: 'manual' }));
+    const upstream = await fetch(new Request(target, { method: request.method, headers, body: ['GET','HEAD'].includes(request.method) ? undefined : request.body, duplex: 'half', redirect: 'manual' }));
     const result = new Response(upstream.body, upstream);
     result.headers.set('Cache-Control', 'no-store');
     return result;
