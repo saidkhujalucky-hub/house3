@@ -250,10 +250,20 @@ export class InquiriesController {
 @Controller('admin')
 export class AdminController {
   constructor(private readonly db:DbService,private readonly auth:AuthService){}
-  @Get('properties') async listings(@Headers('authorization') token:string,@Query('status') status?:string){
+  @Get('properties') async listings(@Headers('authorization') token:string,
+    @Query('status') status?:string,@Query('page') pageRaw?:string,@Query('limit') limitRaw?:string){
     await this.auth.user(token,true);
     if(status&&!['PENDING','APPROVED','REJECTED'].includes(status)) throw new BadRequestException('Invalid status');
-    return this.db.property.findMany({where:status?{status:status as PropertyStatus}:{},include:propertyInclude,orderBy:{createdAt:'desc'}});
+    const page=pageRaw===undefined?1:Number(pageRaw), requested=limitRaw===undefined?12:Number(limitRaw);
+    if(!Number.isSafeInteger(page)||page<1||!Number.isSafeInteger(requested)||requested<1)
+      throw new BadRequestException('page and limit must be positive integers');
+    const limit=Math.min(requested,50);
+    const where:Prisma.PropertyWhereInput=status?{status:status as PropertyStatus}:{};
+    const [data,total]=await this.db.$transaction([
+      this.db.property.findMany({where,include:propertyInclude,orderBy:{createdAt:'desc'},skip:(page-1)*limit,take:limit}),
+      this.db.property.count({where})
+    ]);
+    return {data,meta:{page,limit,total,totalPages:Math.ceil(total/limit)}};
   }
   @Patch('properties/:id/status') async moderate(@Headers('authorization') token:string,@Param('id',ParseIntPipe) id:number,@Body() d:StatusDto){
     await this.auth.user(token,true);await requireEntity(this.db.property.findUnique({where:{id}}));
