@@ -1,4 +1,4 @@
-name: Backend build verification
+name: Backend build and registration test
 on:
   push:
     paths:
@@ -6,11 +6,31 @@ on:
       - '.github/workflows/backend-check.yml'
   workflow_dispatch:
 jobs:
-  compile:
+  test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: house3
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d house3"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     defaults:
       run:
         working-directory: backend
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/house3?schema=public
+      JWT_SECRET: github-action-test-secret-never-use-in-production
+      PORT: 3000
+      FRONTEND_ORIGIN: http://localhost:5500
+      PUBLIC_API_URL: http://localhost:3000
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,9 +38,15 @@ jobs:
           node-version: '22'
       - run: npm install
       - run: npx prisma validate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/house3?schema=public
       - run: npx prisma generate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/house3?schema=public
+      - run: npx prisma db push
       - run: npm run build
+      - name: Start backend and smoke-test registration
+        run: |
+          node dist/main.js > /tmp/house3-api.log 2>&1 &
+          echo $! > /tmp/house3-api.pid
+          node scripts/smoke-auth.mjs || { cat /tmp/house3-api.log; exit 1; }
+      - name: Stop test server
+        if: always()
+        run: |
+          if [ -f /tmp/house3-api.pid ]; then kill "$(cat /tmp/house3-api.pid)" || true; fi
