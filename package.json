@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Standalone frontend for existing NestJS real-estate marketplace. Zero dependencies and no backend modifications.",
   "scripts": {
-    "start": "node server.mjs"
+    "start": "node server.mjs",
+    "build:pages": "node scripts/build-pages.mjs"
   }
 }
