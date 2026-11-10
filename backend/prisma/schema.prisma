@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Role { USER ADMIN }
+enum ListingType { SALE RENT }
+enum PropertyStatus { PENDING APPROVED REJECTED }
+model User {
+  id Int @id @default(autoincrement())
+  fullName String
+  email String @unique
+  passwordHash String
+  phone String?
+  role Role @default(USER)
+  createdAt DateTime @default(now())
+  properties Property[]
+  favorites Favorite[]
+  inquiries Inquiry[]
+}
+model Category {
+  id Int @id @default(autoincrement())
+  name String
+  slug String @unique
+  properties Property[]
+}
+model Property {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  price Float
+  currency String @default("USD")
+  listingType ListingType
+  status PropertyStatus @default(PENDING)
+  address String
+  city String
+  area Float
+  rooms Int
+  bathrooms Int @default(1)
+  sellerId Int
+  categoryId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  seller User @relation(fields:[sellerId],references:[id],onDelete:Cascade)
+  category Category @relation(fields:[categoryId],references:[id])
+  images PropertyImage[]
+  favorites Favorite[]
+  inquiries Inquiry[]
+  @@index([status,city,price])
+  @@index([sellerId])
+}
+model PropertyImage {
+  id Int @id @default(autoincrement())
+  url String
+  altText String?
+  sortOrder Int @default(0)
+  propertyId Int
+  property Property @relation(fields:[propertyId],references:[id],onDelete:Cascade)
+}
+model Favorite {
+  id Int @id @default(autoincrement())
+  userId Int
+  propertyId Int
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  property Property @relation(fields:[propertyId],references:[id],onDelete:Cascade)
+  @@unique([userId,propertyId])
+}
+model Inquiry {
+  id Int @id @default(autoincrement())
+  message String
+  phone String?
+  senderId Int
+  propertyId Int
+  createdAt DateTime @default(now())
+  sender User @relation(fields:[senderId],references:[id],onDelete:Cascade)
+  property Property @relation(fields:[propertyId],references:[id],onDelete:Cascade)
+}
