@@ -1,20 +1,20 @@
-import { Module, Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Module, Global } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController, UsersController, CategoriesController, PropertiesController, FavoritesController, InquiriesController, AdminController, AuthService, PropertiesService, DbService } from './api';
-@Module({ providers: [DbService, AuthService], controllers: [AuthController,UsersController] })
+@Global()
+@Module({ providers: [DbService, AuthService], exports:[DbService,AuthService], controllers: [AuthController,UsersController] })
 export class AuthModule {}
-@Module({ providers: [DbService], controllers:[CategoriesController] })
+@Module({ controllers:[CategoriesController] })
 export class CategoriesModule {}
-@Module({ providers:[DbService, PropertiesService], controllers:[PropertiesController] })
+@Module({ providers:[PropertiesService], controllers:[PropertiesController] })
 export class PropertiesModule {}
-@Module({ providers:[DbService], controllers:[FavoritesController] })
+@Module({ controllers:[FavoritesController] })
 export class FavoritesModule {}
-@Module({ providers:[DbService], controllers:[InquiriesController] })
+@Module({ controllers:[InquiriesController] })
 export class InquiriesModule {}
-@Module({ providers:[DbService], controllers:[AdminController] })
+@Module({ controllers:[AdminController] })
 export class AdminModule {}
 @Module({
- imports:[JwtModule.register({secret:process.env.JWT_SECRET}),AuthModule,CategoriesModule,PropertiesModule,FavoritesModule,InquiriesModule,AdminModule],
+ imports:[JwtModule.register({global:true,secret:process.env.JWT_SECRET}),AuthModule,CategoriesModule,PropertiesModule,FavoritesModule,InquiriesModule,AdminModule],
 })
 export class AppModule {}
