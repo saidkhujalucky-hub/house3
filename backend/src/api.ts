@@ -105,6 +105,15 @@ export class AuthService {
     return {accessToken:await this.jwt.signAsync({sub:u.id,role:u.role}),user:{id:u.id,fullName:u.fullName,email:u.email,phone:u.phone,role:u.role}};
   }
 }
+@Controller('health')
+export class HealthController {
+  constructor(private readonly db:DbService){}
+  @Get() async check() {
+    await this.db.$queryRaw`SELECT 1`;
+    return {status:'ok'};
+  }
+}
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly auth:AuthService){}
