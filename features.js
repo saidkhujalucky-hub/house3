@@ -13,7 +13,7 @@ export function mountMarket(ctx) {
       category:p.category?.name||'',categoryId:p.categoryId,rooms:Number(p.rooms)||0,
       area:Number(p.area)||0,bathrooms:Number(p.bathrooms)||0,
       photo:pics[0]||null,gallery:pics,images:Array.isArray(p.images)?p.images:[],
-      ownerId:Number(p.ownerId),owner:p.owner||null,real:true,status:p.status};
+      ownerId:Number(p.ownerId ?? p.sellerId),owner:p.owner||p.seller||null,real:true,status:p.status};
   };
   const error=e=>{if(e?.status===401&&state.token){state.token='';state.user=null;state.favorites=[];sessionStorage.removeItem('marketplace-front-jwt');toast('Sessiya tugadi. Qayta kiring.','error');navigate('#/login');return true;}return false;};
   const refresh=async(search={})=>{
