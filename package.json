@@ -3,9 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Standalone frontend for existing NestJS real-estate marketplace. Zero dependencies and no backend modifications.",
+  "description": "Real-estate frontend with Cloudflare Pages D1 authentication and optional NestJS proxy",
   "scripts": {
-    "start": "node server.mjs",
-    "build:pages": "node scripts/build-pages.mjs"
+    "build:pages": "node scripts/build-pages.mjs",
+    "test:cloudflare": "node --test tests/cloudflare-*.test.mjs"
   }
 }

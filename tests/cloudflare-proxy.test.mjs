@@ -5,7 +5,7 @@ import {onRequest} from '../functions/api/[[path]].js';
 test('Cloudflare Pages reports configuration error clearly',async()=>{
   const response=await onRequest({request:new Request('https://site.pages.dev/api/auth/register',{method:'POST',body:'{}'}),env:{},params:{path:['auth','register']}});
   assert.equal(response.status,503);
-  assert.match((await response.json()).message,/BACKEND_ORIGIN/);
+  assert.match((await response.json()).message,/DB/);
 });
 
 test('Cloudflare Pages forwards registration method, JSON body and URL',async()=>{

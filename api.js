@@ -34,7 +34,7 @@ async function request(path, { method = 'GET', body, token } = {}) {
 
 export const api = {
   baseUrl: API_BASE_URL,
-  health: () => request('/categories'),
+  health: () => request('/health'),
   categories: () => request('/categories'),
   register: (body) => request('/auth/register', { method: 'POST', body }),
   login: (body) => request('/auth/login', { method: 'POST', body }),

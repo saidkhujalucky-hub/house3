@@ -1,7 +1,10 @@
+import { handleCloudflareAuth } from '../../cloudflare/auth.js';
 // Cloudflare Pages Function: same-origin API proxy.
 // Set BACKEND_ORIGIN in Cloudflare Pages environment variables to a public HTTPS
 // URL serving the existing NestJS backend, e.g. https://your-api.example.com.
-export async function onRequest({ request, env, params }) {
+export async function onRequest(context) {
+  const { request, env, params } = context;
+  if (!String(env.BACKEND_ORIGIN || '').trim()) return handleCloudflareAuth(context);
   const configured = String(env.BACKEND_ORIGIN || '').trim();
   let base;
   try {
