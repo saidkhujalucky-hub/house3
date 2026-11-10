@@ -5,9 +5,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-enum Role { USER ADMIN }
-enum ListingType { SALE RENT }
-enum PropertyStatus { PENDING APPROVED REJECTED }
+enum Role {
+  USER
+  ADMIN
+}
+enum ListingType {
+  SALE
+  RENT
+}
+enum PropertyStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
 model User {
   id Int @id @default(autoincrement())
   fullName String
