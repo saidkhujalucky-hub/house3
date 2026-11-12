@@ -189,7 +189,8 @@ export class PropertiesController {
   @Post() async create(@Headers('authorization') token:string,@Body() d:PropertyDto){
     const u=await this.auth.user(token);
     await requireEntity(this.db.category.findUnique({where:{id:d.categoryId}}));
-    return this.db.property.create({data:{...d,sellerId:u.id,status:'PENDING'},include:propertyInclude});
+    const {categoryId,...fields}=d;
+    return this.db.property.create({data:{...fields,seller:{connect:{id:u.id}},category:{connect:{id:categoryId}},status:'PENDING'},include:propertyInclude});
   }
   @Patch(':id') async patch(@Headers('authorization') token:string,@Param('id',ParseIntPipe) id:number,@Body() d:EditPropertyDto){
     const u=await this.auth.user(token);await this.owned(id,u.id);
