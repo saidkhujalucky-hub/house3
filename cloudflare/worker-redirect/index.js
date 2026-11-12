@@ -1,4 +1,4 @@
-// Keep the separate Worker pointed at the active Pages site.
+// Forward the separate Worker to the active House3 Pages site.
 export default {
   fetch(request) {
     const url = new URL(request.url);
